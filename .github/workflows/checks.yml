@@ -1,0 +1,36 @@
+name: Checks
+
+# Runs on every pull request: review-gate tests, TypeScript check, and that
+# every video folder's scenes.json/script.md can be read by the templates.
+# It does NOT render and does NOT require review boxes to be ticked.
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: video
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: video/package-lock.json
+      - run: npm ci
+      - run: npm test
+      - name: Read every video folder
+        run: node scripts/prepare.mjs --strict
+      - run: npm run typecheck
+      - name: No big binaries committed
+        working-directory: .
+        run: |
+          bad=$(git ls-files | grep -Ei '\.(mp4|mov|webm|wav|mp3|m4a|aac|ogg)$' || true)
+          if [ -n "$bad" ]; then echo "Binary media must not be in git:"; echo "$bad"; exit 1; fi

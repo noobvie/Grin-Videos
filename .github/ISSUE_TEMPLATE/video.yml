@@ -1,0 +1,138 @@
+name: "🎬 New video"
+description: Track one community-made Grin video from topic to metrics.
+title: "🎬 "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        One issue = one video. Pick a topic from `topics/backlog.md`, fill this in, then follow
+        the checklist below (full instructions: `PROCESS.md`).
+        **After submitting:** add the matching `area:*`, `template:*` and `lang:*` labels on the right.
+
+        Ground rules: educational, never promotional · always "community-made" · never overstate
+        privacy · every claim sourced · only humans tick review boxes.
+
+  - type: input
+    id: title
+    attributes:
+      label: Video title
+      description: Short, plain, a question works well.
+      placeholder: "How does a Grin transaction work?"
+    validations:
+      required: true
+
+  - type: input
+    id: video_id
+    attributes:
+      label: Video folder id
+      description: "`NNNN_short-slug` — next free number in `videos/`. Leave empty if you don't know yet."
+      placeholder: "0002_what-is-mimblewimble"
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Content area
+      options:
+        - basics
+        - how-it-works
+        - how-to
+        - myths
+        - history
+        - ecosystem
+        - weekly-stats
+        - qa
+    validations:
+      required: true
+
+  - type: dropdown
+    id: template
+    attributes:
+      label: Template
+      description: Only "explainer" is built so far; the others are planned.
+      options:
+        - explainer
+        - myth-fact
+        - step-by-step
+        - comparison
+        - stat-card
+        - timeline
+      default: 0
+    validations:
+      required: true
+
+  - type: dropdown
+    id: language
+    attributes:
+      label: Language
+      options:
+        - en — English
+        - es — Spanish
+        - fr — French
+        - de — German
+        - pt — Portuguese
+        - ru — Russian
+        - zh — Chinese
+        - vi — Vietnamese
+      default: 0
+    validations:
+      required: true
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: The one idea this video explains, who it's for, links to start from.
+
+  - type: checkboxes
+    id: script
+    attributes:
+      label: "1 · Script"
+      description: Tick these on the issue later, as the work gets done.
+      options:
+        - label: Folder created from `videos/_template/` and `"id"` set in `scenes.json`
+        - label: "`script.md` drafted (150–300 words, one idea, plain words)"
+        - label: "`scenes.json` drafted (one scene per `## Scene N`)"
+        - label: "`sources.md` lists every `[S#]` cited in the script"
+        - label: Pull request opened
+        - label: Previewed in the studio (`npm run studio`)
+
+  - type: checkboxes
+    id: review
+    attributes:
+      label: "2 · Review gates (HUMAN ONLY — AI never ticks these)"
+      description: Mirror of the four boxes in the video's `review.md`. The render refuses to run until those are ticked.
+      options:
+        - label: "Technical — mechanics correct, diagram matches narration"
+        - label: "Facts — every claim sourced, every source checked"
+        - label: "Knowledge — clear for newcomers, privacy limits stated honestly"
+        - label: "Tone — educational, not promotional, labelled community-made"
+        - label: Pull request merged into `main`
+
+  - type: checkboxes
+    id: production
+    attributes:
+      label: "3 · Production"
+      options:
+        - label: "Audio recorded: `videos/<id>/audio/scene-NN.mp3` (not in git)"
+        - label: "Rendered: `npm run render -- <id>` → `renders/<id>.mp4`"
+        - label: Watched the full MP4 once
+        - label: Subtitles (TODO — not built yet)
+        - label: Translations (TODO — not built yet)
+
+  - type: checkboxes
+    id: publish
+    attributes:
+      label: "4 · Publish"
+      options:
+        - label: Description says community-made + not financial advice + lists the sources
+        - label: Uploaded; links to every post pasted in a comment below
+        - label: "`status` set to `published`"
+
+  - type: checkboxes
+    id: metrics
+    attributes:
+      label: "5 · Metrics (7 days after publishing)"
+      options:
+        - label: Views, average watch time, likes, comments, shares posted as a comment
+        - label: One lesson learned written down
+        - label: "`status` set to `measured`, issue closed"
