@@ -1,0 +1,15 @@
+{
+  "_comment": "How the AI voice should SAY a word (left = as written in script.md, right = what the voice reads). Whole words, case-sensitive. Only affects the voice, never captions.",
+  "Dandelion++": "Dandelion plus plus",
+  "Cuckatoo32": "Cuckatoo thirty-two",
+  "Cuckaroo29": "Cuckaroo twenty-nine",
+  "grin.mw": "grin dot M W",
+  "docs.grin.mw": "docs dot grin dot M W",
+  "MWEB": "M-Web",
+  "RFC": "R F C",
+  "RFCs": "R F Cs",
+  "tGRIN": "test grin",
+  "ASIC": "ay-sick",
+  "ASICs": "ay-sicks",
+  "Tor": "tor"
+}

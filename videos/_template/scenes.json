@@ -1,0 +1,43 @@
+{
+  "id": "_template",
+  "title": "PLACEHOLDER video title",
+  "template": "explainer",
+  "language": "en",
+  "format": "vertical",
+  "wordsPerSecond": 2.5,
+  "scenes": [
+    {
+      "type": "title",
+      "heading": "PLACEHOLDER title",
+      "subheading": "PLACEHOLDER one-line hook"
+    },
+    {
+      "type": "diagram",
+      "heading": "PLACEHOLDER diagram heading",
+      "nodes": [
+        { "id": "a", "label": "Step A" },
+        { "id": "b", "label": "Step B" },
+        { "id": "c", "label": "Step C" }
+      ],
+      "edges": [
+        { "from": "a", "to": "b", "label": "first" },
+        { "from": "b", "to": "c", "label": "then" }
+      ],
+      "caption": "PLACEHOLDER caption under the diagram"
+    },
+    {
+      "type": "callouts",
+      "heading": "PLACEHOLDER key points",
+      "points": [
+        { "text": "PLACEHOLDER point one" },
+        { "text": "PLACEHOLDER point two" },
+        { "text": "PLACEHOLDER honest limitation", "kind": "limit" }
+      ]
+    },
+    {
+      "type": "outro",
+      "heading": "Learn more",
+      "links": ["docs.grin.mw"]
+    }
+  ]
+}
