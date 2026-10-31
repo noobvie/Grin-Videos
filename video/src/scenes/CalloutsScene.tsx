@@ -24,7 +24,7 @@ export const CalloutsScene: React.FC<{ scene: T }> = ({ scene }) => {
       <div style={{ marginTop: 80 * u }}>
         <Heading>{scene.heading}</Heading>
       </div>
-      <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", gap: 34 * u, paddingBottom: 120 * u }}>
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", gap: 34 * u, paddingBottom: 380 * u }}>
         {scene.points.map((p, i) => {
           const s = STYLE[p.kind ?? "point"];
           const enter = spring({ frame: frame - fps * 0.4 - i * step, fps, config: { damping: 200 } });

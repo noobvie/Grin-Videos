@@ -9,7 +9,7 @@ export const FPS = 30;
 export const DEFAULT_WORDS_PER_SECOND = 2.5; // ≈150 words/minute, a calm explainer pace
 export const AUDIO_EXTENSIONS = ["mp3", "wav", "m4a", "ogg"];
 
-const PAUSE_AFTER_AUDIO_S = 0.5; // breathing room before the next scene
+export const PAUSE_AFTER_AUDIO_S = 0.5; // breathing room before the next scene
 const PAUSE_AFTER_ESTIMATE_S = 0.8;
 const MIN_SCENE_S = { title: 3, outro: 5, diagram: 4, callouts: 4 };
 
@@ -17,11 +17,16 @@ export function countWords(text) {
   return (text || "").split(/\s+/).filter(Boolean).length;
 }
 
+/** Estimated speaking time only (no pause, no minimum). */
+export function estimateSpeechSeconds(spoken, wordsPerSecond = DEFAULT_WORDS_PER_SECOND) {
+  return countWords(spoken) / wordsPerSecond;
+}
+
+/** Scene length when there is no audio: speech estimate + pause, at least the scene minimum. */
 export function estimateSeconds(sceneType, spoken, wordsPerSecond = DEFAULT_WORDS_PER_SECOND) {
   const min = MIN_SCENE_S[sceneType] ?? 3;
-  const words = countWords(spoken);
-  if (words === 0) return min;
-  return Math.max(min, words / wordsPerSecond + PAUSE_AFTER_ESTIMATE_S);
+  if (countWords(spoken) === 0) return min;
+  return Math.max(min, estimateSpeechSeconds(spoken, wordsPerSecond) + PAUSE_AFTER_ESTIMATE_S);
 }
 
 /** scene-01.mp3 etc. for scene number n (1-based), or null. */
@@ -34,10 +39,11 @@ export function findSceneAudio(audioDir, n) {
   return null;
 }
 
+/** Length of the audio file itself, in seconds. */
 export async function audioSeconds(file) {
   const meta = await parseFile(file, { duration: true });
   if (!meta.format.duration) throw new Error(`Could not read the length of ${file}`);
-  return meta.format.duration + PAUSE_AFTER_AUDIO_S;
+  return meta.format.duration;
 }
 
 export const toFrames = (seconds, fps = FPS) => Math.ceil(seconds * fps);

@@ -113,10 +113,10 @@ body:
     attributes:
       label: "3 · Production"
       options:
-        - label: "Audio recorded: `videos/<id>/audio/scene-NN.mp3` (not in git)"
+        - label: "Audio: `npm run voice -- <id>` (or own recording); listened to every scene"
+        - label: "Subtitles: `npm run subtitles -- <id>`; checked in the studio; `subtitles/` committed"
         - label: "Rendered: `npm run render -- <id>` → `renders/<id>.mp4`"
-        - label: Watched the full MP4 once
-        - label: Subtitles (TODO — not built yet)
+        - label: Watched the full MP4 once, with sound
         - label: Translations (TODO — not built yet)
 
   - type: checkboxes
@@ -124,7 +124,8 @@ body:
     attributes:
       label: "4 · Publish"
       options:
-        - label: Description says community-made + not financial advice + lists the sources
+        - label: "Description says community-made, not financial advice, 'Narration: AI voice', and lists the sources"
+        - label: "`subtitles/<lang>.srt` uploaded where the platform accepts it"
         - label: Uploaded; links to every post pasted in a comment below
         - label: "`status` set to `published`"
 

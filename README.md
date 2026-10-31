@@ -24,17 +24,20 @@ Mimblewimble — how it works, how to use it, and where its limits are.
 2. **Read [`PROCESS.md`](PROCESS.md)** once, top to bottom. It's the map.
 3. **Look at one video folder:** [`videos/0001_how-a-grin-transaction-works/`](videos/0001_how-a-grin-transaction-works/).
    Open `script.md`, `scenes.json`, `sources.md` and `review.md` to see how they fit together.
-4. **Preview it on your PC** (Windows):
-   1. Install [Node.js LTS](https://nodejs.org) (version 22 or newer) and [Git for Windows](https://git-scm.com/download/win).
-   2. Open **PowerShell** and run:
-      ```powershell
-      git clone https://github.com/noobvie/Grin-Videos.git
-      cd Grin-Videos\video
-      npm install
-      npm run studio
-      ```
-   3. A browser tab opens at `http://localhost:3000`. Pick a video on the left and press play.
-      Press **Ctrl+C** in PowerShell to stop.
+4. **Preview it on your computer.**
+   - **Mac:** install [Node.js LTS](https://nodejs.org) (version 22 or newer, the macOS installer).
+     Open **Terminal** (if `git` is missing, run `xcode-select --install` first) and run:
+     ```bash
+     git clone https://github.com/noobvie/Grin-Videos.git
+     cd Grin-Videos/video
+     npm install
+     npm run studio
+     ```
+   - **Windows:** install Node.js LTS and [Git for Windows](https://git-scm.com/download/win),
+     then run the same commands in **PowerShell** (use `cd Grin-Videos\video`).
+
+   A browser tab opens at `http://localhost:3000`. Pick a video on the left and press play.
+   Press **Ctrl+C** in the terminal to stop.
 5. **Start your first real video:** on GitHub, go to **Issues → New issue → 🎬 New video**,
    pick a topic from [`topics/backlog.md`](topics/backlog.md), and follow the checklist in the issue.
 
@@ -42,6 +45,8 @@ Mimblewimble — how it works, how to use it, and where its limits are.
 
 - **Script** — the words the narrator says (`script.md`).
 - **Scenes** — what's on screen while they say it (`scenes.json`).
-- **Render** — turning the scenes + audio into an `.mp4` file.
+- **Voice** — `npm run voice` reads the script aloud with a free AI voice that runs on your computer.
+- **Subtitles** — `npm run subtitles` makes captions; the words come from the script, timing from the audio.
+- **Render** — turning the scenes + audio + captions into an `.mp4` file.
 - **Review gate** — the render refuses to run until a human ticks all four boxes in `review.md`.
 - **PR (pull request)** — a proposed change on a branch that others review before it's merged into `main`.

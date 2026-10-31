@@ -23,8 +23,14 @@ export type PreparedScene = Scene & {
   narration: string;
   durationInFrames: number;
   durationSource: "audio" | "estimate";
+  speechSeconds: number;
   audioSrc: string | null; // path under video/public/, for staticFile()
+  audioStale: boolean; // AI voice made from older script words
+  audioEngine: string | null;
 };
+
+/** One burned-in caption, in frames from the start of the video. */
+export type Caption = { from: number; to: number; text: string };
 
 export type VideoFormat = "vertical" | "landscape" | "square";
 
@@ -38,5 +44,8 @@ export type PreparedVideo = {
   fps: number;
   reviewApproved: boolean;
   gateProblems: string[];
+  captionsEnabled: boolean;
+  captions: Caption[];
+  warnings: string[];
   scenes: PreparedScene[];
 };

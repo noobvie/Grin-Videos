@@ -8,16 +8,20 @@ The `status` file in the video's folder holds the current step (one word).
 | 1 | Topic | **GitHub** (Issues) | Human | `idea` |
 | 2 | Script | **claude.ai/code** → a pull request on GitHub | AI drafts, human edits | `script` |
 | 3 | Review (4 gates) | **GitHub** (the pull request) | **Humans only** | `review` |
-| 4 | Audio | **Your PC** | Human (TTS later) | `audio` |
-| 5 | Render | **Your PC** (`npm run render`) | Human | `render` |
-| 6 | Subtitles | *TODO* | — | `subtitles` |
+| 4 | Audio | **Your computer** (`npm run voice`) | AI voice, human listens | `audio` |
+| 5 | Subtitles | **Your computer** (`npm run subtitles`) | Automatic, human checks | `subtitles` |
+| 6 | Render | **Your computer** (`npm run render`) | Human | `render` |
 | 7 | Translations | *TODO* | — | `translations` |
 | 8 | Publish | **Social platforms** | Human | `published` |
 | 9 | Measure (7 days later) | **Social platforms** → **GitHub** issue | Human | `measured` |
 
 ```
-GitHub issue ─► claude.ai/code ─► GitHub PR + review ─► your PC (audio, render) ─► socials ─► GitHub issue (metrics)
+GitHub issue ─► claude.ai/code ─► GitHub PR + review ─► your computer (voice, subtitles, render) ─► socials ─► GitHub issue (metrics)
 ```
+
+Subtitles come **before** the render because the captions are burned into the video, and the
+render uses the subtitle timings. "Your computer" = your Mac (or a Windows PC); commands are the same.
+Everything in steps 4–6 runs **locally**: no accounts, no cost per video, nothing uploaded.
 
 ---
 
@@ -76,43 +80,70 @@ If the script changes after review, untick the affected boxes so it gets checked
 
 When all four are ticked: set `status` to `review`, and **merge the PR** into `main`.
 
-## 4. Audio — your PC
+## 4. Audio — your computer
 
-For now, record the narration yourself (TTS is a TODO).
-1. Record **one file per scene**, reading `script.md` (skip the `[S1]` markers and `>` notes).
-   Free tool: [Audacity](https://www.audacityteam.org). Quiet room, phone mic is OK to start.
-2. Export as MP3 (or WAV) and save as:
-   ```
-   videos/<id>/audio/scene-01.mp3
-   videos/<id>/audio/scene-02.mp3
-   …
-   ```
-   Numbers match `## Scene 1`, `## Scene 2`… These files **stay on your PC** (git ignores them).
-3. Run `npm run studio` again: each scene now lasts as long as its audio (+ a short pause).
-   Scenes without audio still use the word-count estimate.
-4. Set `status` to `audio`.
-
-## 5. Render — your PC
-
-```powershell
+**Option A — AI voice (default).** In Terminal (Mac) or PowerShell (Windows):
+```bash
 cd video
+npm run voice -- 0001
+```
+- Reads every `## Scene N` of `script.md` with the **Kokoro** voice (free, Apache-2.0 licence,
+  runs on your computer). Writes `videos/<id>/audio/scene-01.wav`, `scene-02.wav`… (not in git).
+- The first run downloads the voice model (~90 MB) once. After that a whole video takes about a minute.
+- Run it again any time: scenes whose words didn't change are skipped.
+- A word sounds wrong (e.g. "Dandelion++")? Add it to `brand/pronunciation.json` and run with `--force`.
+- Other voices: `npm run voice -- 0001 --voice am_michael` (list in `brand/README.md`).
+  Quick preview with the Mac's built-in voice: `--engine say` (preview only, not for publishing).
+- **Listen to every scene.** You're the quality check.
+
+**Option B — your own voice.** Record one file per scene (skip `[S1]` markers and `>` notes),
+e.g. with [Audacity](https://www.audacityteam.org), and save as `videos/<id>/audio/scene-01.mp3`, …
+Your recordings always win: `npm run voice` never overwrites them.
+
+Either way, `npm run studio` now times each scene to its audio (+ a short pause).
+Set `status` to `audio`.
+
+> **Safety check:** the AI voice remembers which words it read. If `script.md` changes later,
+> `npm run render` refuses until you run `npm run voice` again — so the video can never say
+> something the reviewers didn't approve.
+
+## 5. Subtitles — your computer
+
+```bash
+npm run subtitles -- 0001
+```
+- Writes `videos/<id>/subtitles/en.srt` (upload this to YouTube etc.) and `en.json` (timings the
+  video reuses). Both are small text files — commit them.
+- The **words** always come from `script.md`. **Whisper** (speech recognition, runs on your
+  computer, ~80 MB download once) only listens to find *when* each word is said.
+  `--no-whisper` spreads the captions evenly instead.
+- Captions are also **burned into the video** (most people watch muted). To turn that off for one
+  video: `"captions": false` in its `scenes.json`.
+- Check them in `npm run studio`. Set `status` to `subtitles`.
+
+## 6. Render — your computer
+
+```bash
 npm run render -- 0001
 ```
-- Checks the review gate → refreshes durations → writes `renders/0001_….mp4` (not in git).
+- Checks the review gate → checks the audio still matches the script → writes `renders/0001_….mp4` (not in git).
 - First render downloads a headless Chrome (~100 MB) once. Rendering a 90 s video takes a few minutes.
-- Watch the whole MP4 once before publishing. Set `status` to `render`.
-
-## 6. Subtitles — TODO (see below)
+- Watch the whole MP4 once, with sound, before publishing. Set `status` to `render`.
 
 ## 7. Translations — TODO (see below)
 
+Kokoro's voices are English only; other languages need another voice (part of this TODO).
+
 ## 8. Publish — social platforms
 
-1. Upload the MP4 (YouTube Shorts / TikTok / Instagram Reels / X / Mastodon …).
+1. Upload the MP4 (YouTube Shorts / TikTok / Instagram Reels / X / Mastodon …). Where the
+   platform accepts subtitle files, also upload `subtitles/en.srt`. If the platform asks about
+   "altered or synthetic content", answer honestly for the AI voice.
 2. Description template:
    ```
    <one-line summary>
    Community-made explainer — not an official grin.mw production. Educational only, not financial advice.
+   Narration: AI voice (Kokoro).
    Sources:
    [S1] <title> — <link>
    [S2] …
@@ -155,11 +186,10 @@ Labels not in the file are left alone. `blocked` = waiting on something; say wha
 
 These are planned but **not** part of the current setup:
 
-- [ ] **TTS integration** — generate `audio/scene-NN.mp3` from `script.md` with a text-to-speech
-      service (voice choice + licence check, per-language voices).
-- [ ] **Subtitles** — `.srt` from the narration + scene timings; burn-in option for platforms that need it.
+- [x] ~~TTS integration~~ — done: `npm run voice` (Kokoro, local). Still to do: voices for other languages.
+- [x] ~~Subtitles~~ — done: `npm run subtitles` (Whisper timing, local) + burned-in captions.
 - [ ] **Translations** — AI draft of `script.md` + on-screen text per language, reviewed by a native
-      speaker (same four gates); CJK fonts (Noto Sans SC/JP/KR, OFL).
+      speaker (same four gates); CJK fonts (Noto Sans SC/JP/KR, OFL); a voice per language.
 - [ ] **Rendering on GitHub Actions** — a workflow that runs `node tools/review-gate.mjs <id>`
       first, renders, and uploads the MP4 as an artifact (never committed).
 - [ ] **Weekly scheduled routine** — e.g. weekly-stats videos and a backlog check.

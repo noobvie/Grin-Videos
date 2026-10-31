@@ -1,6 +1,7 @@
 import React from "react";
 import { AbsoluteFill, Audio, Series, staticFile } from "remotion";
 import { C, FONT_BODY } from "./brand";
+import { Captions } from "./components/Captions";
 import { CommunityBadge } from "./components/CommunityBadge";
 import { CalloutsScene } from "./scenes/CalloutsScene";
 import { DiagramScene } from "./scenes/DiagramScene";
@@ -36,6 +37,7 @@ export const Explainer: React.FC<{ video: PreparedVideo }> = ({ video }) => (
         </Series.Sequence>
       ))}
     </Series>
+    {video.captionsEnabled ? <Captions captions={video.captions} /> : null}
     <CommunityBadge />
   </AbsoluteFill>
 );

@@ -78,9 +78,9 @@ export function readNarration(scriptMd) {
 
 const SOURCE_MARKER_RE = /\[S(\d+)\]/g;
 
-/** Narration as it should be spoken: source markers like [S1] removed. */
+/** Narration as it should be spoken: source markers like [S1] removed ("together [S1]." → "together."). */
 export function spokenText(narration) {
-  return (narration || "").replace(SOURCE_MARKER_RE, "").replace(/\s+/g, " ").trim();
+  return (narration || "").replace(/\s*\[S\d+\]/g, "").replace(/\s+/g, " ").trim();
 }
 
 /** Source ids cited in a piece of text, e.g. "... [S1] ... [S3]" -> ["S1","S3"]. */

@@ -24,11 +24,11 @@ export const DiagramScene: React.FC<{ scene: T }> = ({ scene }) => {
 
   const boxes: Box[] = scene.nodes.map((_, i) => {
     if (vertical) {
-      const y0 = H * 0.3, span = H * 0.48;
+      const y0 = H * 0.27, span = H * 0.42; // leaves room for the caption line and burned-in captions
       return { cx: W / 2, cy: y0 + ((i + 0.5) * span) / n, w: W * 0.56, h: Math.min(170 * u, (span / n) * 0.5) };
     }
     const x0 = W * 0.06, span = W * 0.88;
-    return { cx: x0 + ((i + 0.5) * span) / n, cy: H * 0.6, w: Math.min(400 * u, (span / n) * 0.62), h: 170 * u };
+    return { cx: x0 + ((i + 0.5) * span) / n, cy: H * 0.55, w: Math.min(400 * u, (span / n) * 0.62), h: 170 * u };
   });
   const indexOf = (id: string) => scene.nodes.findIndex((nd) => nd.id === id);
 
@@ -55,7 +55,7 @@ export const DiagramScene: React.FC<{ scene: T }> = ({ scene }) => {
     const sign = forward ? 1 : -1;
     const s: Pt = vertical ? { x: a.cx + (sign * a.w) / 2, y: a.cy } : { x: a.cx, y: a.cy - (sign * a.h) / 2 };
     const e: Pt = vertical ? { x: b.cx + (sign * b.w) / 2, y: b.cy } : { x: b.cx, y: b.cy - (sign * b.h) / 2 };
-    const bulge = vertical ? W * 0.17 : H * 0.17;
+    const bulge = vertical ? W * 0.17 : H * 0.13;
     const c: Pt = vertical
       ? { x: s.x + sign * bulge, y: (s.y + e.y) / 2 }
       : { x: (s.x + e.x) / 2, y: s.y - sign * bulge };
@@ -166,7 +166,7 @@ export const DiagramScene: React.FC<{ scene: T }> = ({ scene }) => {
               position: "absolute",
               left: 80 * u,
               right: 80 * u,
-              bottom: vertical ? H * 0.1 : H * 0.06,
+              top: vertical ? H * 0.715 : H * 0.8,
               fontSize: 42 * u,
               color: C.muted,
               textAlign: "center",

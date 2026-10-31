@@ -15,5 +15,11 @@
     "mono": "JetBrains Mono"
   },
   "communityLabel": "Community-made",
-  "disclaimer": "Not an official grin.mw production · Educational only, not financial advice"
+  "disclaimer": "Not an official grin.mw production · Educational only, not financial advice",
+  "voice": {
+    "_comment": "Default narrator for `npm run voice`. A video can override it in scenes.json under \"voice\". Kokoro voices are Apache-2.0 licensed (OK to publish). See brand/README.md.",
+    "engine": "kokoro",
+    "name": "af_heart",
+    "speed": 1.0
+  }
 }

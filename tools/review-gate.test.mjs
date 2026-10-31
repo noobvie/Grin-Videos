@@ -44,3 +44,7 @@ test("narration is read per scene, notes and comments skipped", () => {
   assert.deepEqual(n, { 1: "Hello [S1]", 2: "World" });
   assert.equal(spokenText(n[1]), "Hello");
 });
+
+test("source markers leave no space before punctuation", () => {
+  assert.equal(spokenText("built together [S1]. Then [S2] it spreads [S1][S3]!"), "built together. Then it spreads!");
+});

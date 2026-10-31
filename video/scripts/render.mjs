@@ -24,9 +24,21 @@ async function main() {
   const { videos } = await prepareAll({ quiet: true });
   const video = videos.find((v) => v.id === id);
   if (!video) throw new Error(`${id} has problems in scenes.json/script.md — run "npm run prepare-data" to see them.`);
+  // Audio made from older words would say something the reviewers never approved.
+  const stale = video.scenes.map((s, i) => (s.audioStale ? i + 1 : null)).filter(Boolean);
+  if (stale.length) {
+    throw new Error(
+      `Not rendering: the AI voice for scene ${stale.join(", ")} was made from an older script.\n` +
+        `Run "npm run voice -- ${id.slice(0, 4)}" first.`
+    );
+  }
+  for (const w of video.warnings) console.log(`⚠ ${w}`);
   const fromAudio = video.scenes.filter((s) => s.durationSource === "audio").length;
-  if (fromAudio < video.scenes.length) {
+  if (fromAudio < video.scenes.filter((s) => s.narration).length) {
     console.log(`⚠ Only ${fromAudio}/${video.scenes.length} scenes have audio; the rest use estimated lengths.`);
+  }
+  if (video.scenes.some((s) => s.audioEngine === "say")) {
+    console.log("⚠ This video uses the macOS 'say' voice (preview only). Check Apple's terms before publishing.");
   }
 
   // 3. Bundle and render.

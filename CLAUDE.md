@@ -31,12 +31,13 @@ small clear changes over clever ones. Pipeline and "where each step happens" →
 
 | Path | What |
 |---|---|
-| `videos/NNNN_slug/` | One video: `script.md`, `scenes.json`, `sources.md`, `review.md`, `status` (+ `audio/`, not in git) |
+| `videos/NNNN_slug/` | One video: `script.md`, `scenes.json`, `sources.md`, `review.md`, `status`, `subtitles/` (+ `audio/`, not in git) |
 | `videos/_template/` | Copy this to start a video; change `"id"` in `scenes.json` to the folder name |
 | `topics/backlog.md` | Content areas, target counts, topic ideas — check for duplicates before adding |
-| `video/` | Remotion project (templates). `npm run studio`, `npm run render -- <id>` |
+| `video/` | Remotion project (templates). `npm run studio`, `voice`, `subtitles`, `render -- <id>` |
 | `tools/review-gate.mjs` | The review gate. Every render path must call it first |
-| `brand/` | Colours (`brand.json`), fonts, intro/outro rules |
+| `tools/captions.mjs`, `tools/voice-text.mjs` | Caption splitting/timing; pronunciation + narration fingerprints |
+| `brand/` | Colours + default voice (`brand.json`), `pronunciation.json`, fonts, intro/outro rules |
 | `.github/` | Issue form "🎬 New video", labels + "Sync labels" workflow, checks |
 
 ## Conventions
@@ -47,4 +48,7 @@ small clear changes over clever ones. Pipeline and "where each step happens" →
 - Plain words first, jargon second (and explained). One idea per video.
 - Templates: only `explainer` is built. Others (`myth-fact`, `step-by-step`, `comparison`,
   `stat-card`, `timeline`) are planned — don't pick them in `scenes.json` until built.
+- Voice and subtitles run locally (Kokoro, Whisper via `@huggingface/transformers`). Never add a cloud
+  TTS/ASR service or voice cloning without the owner asking. Caption text always comes from `script.md`.
+- The render must keep refusing AI audio whose narration fingerprint no longer matches `script.md`.
 - Before committing: `cd video && npm test && npm run typecheck && npm run prepare-data`.
