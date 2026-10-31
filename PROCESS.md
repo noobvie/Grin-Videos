@@ -165,7 +165,7 @@ Kokoro's voices are English only; other languages need another voice (part of th
 1. Repo → **Projects** tab → **Link a project ▾ → New project** → template **Board** →
    name it "Grin Videos". (Creating it from the repo's tab links it to this repo.)
 2. In the board, click the *Status* column menu → edit options so the columns are:
-   `Idea`, `Script`, `Review`, `Audio`, `Render`, `Publish`, `Measure`, `Done`.
+   `Idea`, `Script`, `Review`, `Audio`, `Subtitles`, `Render`, `Publish`, `Measure`, `Done`.
 3. Board menu **⋯ → Workflows**:
    - **Auto-add to project** → repository `Grin-Videos`, filter `is:issue` → *Save and turn on*.
    - **Item added to project** → set Status `Idea` → turn on.
